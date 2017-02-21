@@ -124,29 +124,14 @@ REGISTRY(size, size_t)(List lst){
 	return size;
 }
 
-/* list functions in lua */
-static const char *lua_string = "\
-_LIST = {}\n\
-function new(lst)\n\
-	 _LIST[lst] = {}\n\
-end\n\
-function insert(lst, dta, index) table.insert(_LIST[lst], index+1, dta) end\n\
-function remove(lst, index) table.remove(_LIST[lst], index+1) end\n\
-function get(lst, index) return _LIST[lst][index+1] end\n\
-function set(lst, dta, index) _LIST[lst][index+1] = dta end\n\
-function size(lst)\n\
-	count = 0\n\
-	for x in pairs(_LIST[lst]) do\n\
-		count = count + 1\n\
-	end\n\
-	return count\n\
-end\n";
+/* here contains list functions in lua */
+extern char lua_list[];
 
 /* run on system initialize */
 static void ON_SYS_INIT(list){
 	L = luaL_newstate();
 	luaL_openlibs(L);
-	if(luaL_dostring(L, lua_string)){
+	if(luaL_dostring(L, lua_list)){
 		exit(ERR_LIST_INIT);
 	}
 }
